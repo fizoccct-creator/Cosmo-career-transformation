@@ -1,0 +1,62 @@
+/* ==========================================================================
+   DESIGN TOKENS — the one file to update from Figma.
+   Colours, fonts, sizes and artwork slots live here. app.css only uses these.
+   See DESIGN.md for the matching Figma frames and export names.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand colours ---- */
+  --color-primary: #202959;          /* Primary Blue: backgrounds, structure */
+  --color-primary-deep: #141a3d;     /* darker blue for depth / gradients */
+  --color-primary-soft: #2c3772;     /* lighter blue for cards */
+  --color-accent: #FDD00D;           /* Accent Yellow: buttons, highlights, progress, active */
+  --color-accent-ink: #202959;       /* text on yellow */
+  --color-text: #FFFFFF;             /* main text */
+  --color-text-muted: rgba(255, 255, 255, 0.72);
+  --color-line: rgba(255, 255, 255, 0.16);
+
+  /* ---- Background (swap the gradient for a Figma export with --bg-image) ---- */
+  --bg-gradient: radial-gradient(120% 90% at 85% 10%, #2f3b80 0%, var(--color-primary) 45%, var(--color-primary-deep) 100%);
+  --bg-image: none;                  /* e.g. url("../assets/brand/background.png") */
+
+  /* ---- Typography ---- */
+  --font-display: "Montserrat", "Arial Black", Arial, sans-serif;
+  --font-body: "Montserrat", Arial, sans-serif;
+  --weight-display: 900;
+  --weight-bold: 800;
+  --weight-body: 600;
+
+  /* Fluid type scale: min, preferred (viewport-based), max */
+  --text-hero: clamp(2.6rem, 6.2vw, 7.5rem);
+  --text-title: clamp(2rem, 4.2vw, 5rem);
+  --text-question: clamp(1.8rem, 3.6vw, 4.2rem);
+  --text-lead: clamp(1.15rem, 1.8vw, 2rem);
+  --text-option: clamp(1.15rem, 1.9vw, 2.2rem);
+  --text-button: clamp(1.15rem, 1.6vw, 1.9rem);
+  --text-small: clamp(0.95rem, 1.1vw, 1.25rem);
+
+  /* ---- Shape & spacing ---- */
+  --radius-lg: clamp(18px, 2vw, 36px);
+  --radius-md: clamp(14px, 1.4vw, 24px);
+  --radius-pill: 999px;
+  --border-strong: clamp(3px, 0.3vw, 6px);
+  --space-xs: clamp(6px, 0.6vw, 12px);
+  --space-sm: clamp(10px, 1vw, 20px);
+  --space-md: clamp(16px, 2vw, 36px);
+  --space-lg: clamp(24px, 3.5vw, 64px);
+  --space-xl: clamp(32px, 5vw, 96px);
+
+  /* ---- Touch targets ---- */
+  --button-height: clamp(64px, 8.5vh, 110px);
+  --button-min-width: clamp(220px, 22vw, 440px);
+  --option-min-height: clamp(96px, 18vh, 220px);
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --speed: 280ms;
+
+  /* ---- Artwork slots (Figma exports). Leave as none to use the built-in placeholders. ---- */
+  --art-welcome: none;               /* big illustration on the welcome screen */
+  --art-logo: none;                  /* college logo, top-right corner */
+  --art-loading: none;               /* illustration on the "creating your portrait" screen */
+}

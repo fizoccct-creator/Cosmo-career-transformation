@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#202959">
+<title>Discover Your Creative Career</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+<div id="app" data-screen="welcome">
+
+  <!-- Global progress (hidden on the welcome screen) -->
+  <ol id="progress" class="progress" aria-label="Progress"></ol>
+  <div class="logo-slot" data-slot="logo" aria-hidden="true"></div>
+
+  <!-- 1. WELCOME -->
+  <section class="screen screen-welcome" data-name="welcome">
+    <div class="welcome-copy">
+      <h1 class="hero" data-text="welcome.headline"></h1>
+      <p class="lead" data-text="welcome.text"></p>
+      <button class="btn btn-primary btn-xl" data-action="start" data-text="welcome.button"></button>
+    </div>
+    <div class="welcome-art" data-slot="welcome-art" aria-hidden="true">
+      <!-- Placeholder art: replaced when --art-welcome is set in tokens.css -->
+      <div class="orbit">
+        <span class="orb orb-1"><svg viewBox="0 0 48 48"><path d="M8 16h8l3-5h10l3 5h8v22H8z"/><circle cx="24" cy="26" r="7"/></svg></span>
+        <span class="orb orb-2"><svg viewBox="0 0 48 48"><rect x="6" y="14" width="26" height="20" rx="3"/><path d="M32 21l10-6v18l-10-6z"/></svg></span>
+        <span class="orb orb-3"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="24" rx="3"/><path d="M18 39h12M24 33v6"/><path d="M14 26l7-8 5 5 4-4 6 7"/></svg></span>
+        <span class="orb orb-4"><svg viewBox="0 0 48 48"><rect x="15" y="5" width="18" height="38" rx="4"/><path d="M21 37h6"/><path d="M20 18l7 4-7 4z"/></svg></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSENT (part of step 1) -->
+  <section class="screen screen-consent" data-name="consent">
+    <div class="consent-card">
+      <h2 class="title" data-text="consent.headline"></h2>
+      <p class="lead" id="consentText"></p>
+      <div class="row">
+        <button class="btn btn-ghost" data-action="home" data-text="consent.back"></button>
+        <button class="btn btn-primary" data-action="agree" data-text="consent.agree"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. STEP 1: PHOTO -->
+  <section class="screen screen-photo" data-name="photo">
+    <div class="camera-frame">
+      <video id="video" playsinline muted autoplay></video>
+      <img id="shot" alt="Your photo" hidden>
+      <div id="countdown" class="countdown" hidden></div>
+      <div id="flash" class="flash"></div>
+      <div class="frame-guide" aria-hidden="true"></div>
+    </div>
+    <div class="photo-panel">
+      <p class="kicker">STEP 1</p>
+      <h2 class="title" data-text="photo.instruction"></h2>
+      <p class="lead error" id="cameraError" hidden></p>
+      <div class="stack" id="liveControls">
+        <button class="btn btn-primary btn-xl" data-action="take" data-text="photo.take"></button>
+      </div>
+      <div class="stack" id="reviewControls" hidden>
+        <button class="btn btn-primary btn-xl" data-action="continue" data-text="photo.continue"></button>
+        <button class="btn btn-ghost btn-xl" data-action="retake" data-text="photo.retake"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. STEP 2: QUIZ -->
+  <section class="screen screen-quiz" data-name="quiz">
+    <header class="quiz-head">
+      <p class="kicker" id="quizCount"></p>
+      <div class="quiz-dots" id="quizDots"></div>
+    </header>
+    <h2 class="question" id="questionText"></h2>
+    <div class="options" id="options" role="list"></div>
+    <footer class="quiz-foot">
+      <button class="btn btn-ghost" data-action="quiz-back" data-text="quiz.back"></button>
+      <button class="btn btn-primary" id="finishBtn" data-action="finish" data-text="quiz.finish" hidden disabled></button>
+    </footer>
+  </section>
+
+  <!-- LOADING -->
+  <section class="screen screen-loading" data-name="loading">
+    <div class="loading-visual" data-slot="loading-art">
+      <img id="loadingPhoto" alt="">
+      <div class="ring"></div>
+    </div>
+    <div class="loading-copy">
+      <h2 class="title" data-text="loading.headline"></h2>
+      <p class="lead" id="loadingLine"></p>
+    </div>
+  </section>
+
+  <!-- 4. STEP 3: RESULT -->
+  <section class="screen screen-result" data-name="result">
+    <figure class="portrait">
+      <img id="portrait" alt="Your career portrait">
+    </figure>
+    <div class="result-copy">
+      <p class="kicker" data-text="result.kicker"></p>
+      <p class="lead" data-text="result.prefix"></p>
+      <h2 class="career-title" id="careerTitle"></h2>
+      <p class="lead" id="careerText"></p>
+      <button class="btn btn-primary btn-xl" data-action="restart" data-text="result.button"></button>
+    </div>
+  </section>
+
+  <!-- Idle warning -->
+  <div id="idle" class="idle" hidden>
+    <div class="idle-card">
+      <h2 class="title">Still there?</h2>
+      <p class="lead">Starting over in <span id="idleCount">10</span>…</p>
+      <button class="btn btn-primary btn-xl" data-action="still-here">I'M STILL HERE</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/portrait.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

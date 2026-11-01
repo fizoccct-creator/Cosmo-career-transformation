@@ -1,0 +1,12 @@
+{
+  "name": "cosmo-career-transformation",
+  "version": "1.0.0",
+  "description": "Discover Your Creative Career: touchscreen kiosk with photo, 5-question quiz and AI career portrait",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "UNLICENSED",
+  "private": true
+}

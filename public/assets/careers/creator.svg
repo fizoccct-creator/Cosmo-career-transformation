@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <!-- PLACEHOLDER scene for the template portrait: replace with a Figma export (1080x1350). Keep the lower-middle clear for the person. -->
+  <defs>
+    <radialGradient id="g" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#36449a"/><stop offset=".55" stop-color="#202959"/><stop offset="1" stop-color="#121735"/></radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FDD00D" stop-opacity=".35"/><stop offset="1" stop-color="#FDD00D" stop-opacity="0"/></radialGradient>
+    <pattern id="dots" width="36" height="36" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="2" fill="#ffffff" opacity=".07"/></pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#g)"/>
+  <rect width="1080" height="1350" fill="url(#dots)"/>
+  <ellipse cx="540" cy="560" rx="470" ry="470" fill="url(#glow)"/>
+  <circle cx="540" cy="560" r="400" fill="none" stroke="#FDD00D" stroke-opacity=".35" stroke-width="6" stroke-dasharray="4 22" stroke-linecap="round"/>
+  <g fill="none" stroke="#FDD00D" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <!-- ring light left -->
+    <circle cx="170" cy="230" r="110"/><circle cx="170" cy="230" r="70" stroke-opacity=".5"/><path d="M170 340 V560 M120 560 H220"/>
+    <!-- podcast mic right -->
+    <g transform="translate(850 120)"><rect x="40" y="0" width="80" height="140" rx="40"/><path d="M10 100 C10 170 150 170 150 100"/><path d="M80 170 V220 M40 220 H120"/></g>
+    <!-- phone badge -->
+    <g transform="translate(500 50)"><rect x="0" y="0" width="80" height="140" rx="16"/><path d="M30 120 H50"/><path d="M30 50 L55 65 L30 80 Z"/></g>
+  </g>
+  <rect y="1150" width="1080" height="200" fill="#121735" opacity=".55"/>
+</svg>
