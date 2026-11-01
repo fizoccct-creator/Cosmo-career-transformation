@@ -57,16 +57,8 @@ Use `node server.js`, not VS Code's "Live Server" or "Go Live". The AI portrait 
 - **Your key stays on the kiosk computer.** `.env` is in `.gitignore` and is never uploaded to GitHub. The browser never sees the key.
 - **Cost:** each portrait is one paid Gemini image request. Check current pricing on Google's site and set a budget limit in Google AI Studio before an event.
 - **Model name:** if the terminal shows "model not found", Google has renamed the model. Put the current image-model name in `.env` as `GEMINI_MODEL=...`.
-- **If AI fails** (no internet, quota used up, timeout after 60 s), the visitor automatically gets the **template portrait** instead. They never see an error.
-
-## The two kinds of portrait
-
-| | AI portrait | Template portrait (fallback) |
-|---|---|---|
-| How | Gemini redraws the person in a career scene | The person is cut out of the photo and placed on a career scene |
-| Needs | Internet + API key + `node server.js` | Nothing; works offline |
-| Speed | ~10–30 s | ~1–2 s |
-| Look | Set by the prompts in `content.json` | Set by your Figma scenes in `public/assets/careers/` |
+- **The kiosk needs internet.** Portraits are AI only. If one can't be made (no internet, quota used up, Google's safety filter refuses the photo, or a timeout after 60 s), the visitor sees **"We couldn't create your portrait"** with **TRY AGAIN** (same photo and answers) or **START OVER**. The real reason is printed in the terminal; add `?debug` to the URL to see it on screen too.
+- **Staff warning:** if there's no API key, or the page isn't opened through `node server.js`, a red bar on the welcome screen says so.
 
 ## Privacy
 
@@ -103,10 +95,8 @@ public/content.json           all text, questions, careers, AI prompts, timings
 public/styles/tokens.css      DESIGN TOKENS: colours, fonts, sizes, artwork slots
 public/styles/app.css         layout (landscape first, portrait supported)
 public/js/app.js              flow, camera, quiz, idle reset
-public/js/portrait.js         AI portrait + template fallback
+public/js/portrait.js         asks the server for the AI portrait
 public/js/ar-tracker.js       head tracking for the AR quiz (MediaPipe Face Landmarker)
-public/assets/careers/        career scenes for the template portrait (placeholders for now)
-public/vendor/selfie_segmentation/   Google MediaPipe cut-out model (Apache 2.0), bundled so it works offline
 public/vendor/tasks-vision/          Google MediaPipe face tracking (Apache 2.0), bundled
 public/vendor/face_landmarker/       put face_landmarker.task here for offline AR (see above)
 ```

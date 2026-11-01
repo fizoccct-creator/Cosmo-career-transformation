@@ -36,7 +36,7 @@
   }
 
   // ---------- screens ----------
-  const STEP_OF = { welcome: 0, consent: 1, photo: 1, quiz: 2, loading: 3, result: 3 };
+  const STEP_OF = { welcome: 0, consent: 1, photo: 1, quiz: 2, loading: 3, result: 3, error: 3 };
   function show(name) {
     state.screen = name;
     app.dataset.screen = name;
@@ -201,15 +201,22 @@
     }, 2600);
 
     const started = Date.now();
-    let result;
+    let image = null, error = null;
     try {
-      result = await Portrait.create(state.photo, state.career, career, { ai: aiOn, timeoutSeconds: C.kiosk.aiTimeoutSeconds });
-    } finally { clearInterval(ticker); }
+      image = await Portrait.create(state.photo, state.career, C.kiosk.aiTimeoutSeconds);
+    } catch (e) { error = e; } finally { clearInterval(ticker); }
     if (Date.now() - started < 1800) await wait(1800 - (Date.now() - started));  // let the moment land
     if (state.screen !== "loading") return;    // reset while waiting
 
-    state.portraitSource = result.source;
-    $("portrait").src = result.src;
+    if (error) {
+      // Keep the photo and answers so TRY AGAIN can reuse them.
+      console.warn("Portrait failed:", error.message);
+      state.lastError = error.message;
+      $("errorDetail").textContent = DEBUG ? error.message : "";
+      show("error");
+      return;
+    }
+    $("portrait").src = image;
     $("careerTitle").textContent = career.title;
     $("careerText").textContent = career.description;
     state.photo = null;                         // photo no longer needed
@@ -252,7 +259,6 @@
     renderQuestion();
     show("quiz");
     if (state.ar) ARTracker.start($("arVideo"), document.querySelector(".screen-quiz"), arFrame);
-    Portrait.preload();
   }
 
   function stopAR() {
@@ -386,6 +392,7 @@
         break;
       case "finish": finish(); break;
       case "restart": resetAll(); break;
+      case "retry": finish(); break;
       case "still-here": hideIdle(); resetIdle(); break;
     }
   });
@@ -404,10 +411,16 @@
   // ---------- boot ----------
   (async function init() {
     C = await (await fetch("content.json", { cache: "no-cache" })).json();
-    aiOn = await Portrait.aiAvailable();
+    const st = await Portrait.status();
+    aiOn = st.ai;
     fillText();
     buildProgress();
-    $("consentText").textContent = aiOn ? C.consent.textAi : C.consent.textLocal;
+    $("consentText").textContent = C.consent.text;
+    // Staff-only warning: the kiosk can't make portraits without the server + API key.
+    if (!aiOn) {
+      $("staffWarning").textContent = st.reason === "nokey" ? C.staff.noKey : C.staff.noServer;
+      $("staffWarning").hidden = false;
+    }
     if (hasCssImage("--art-welcome")) document.querySelector(".welcome-art").classList.add("has-art");
     document.body.dataset.ai = aiOn ? "on" : "off";
     show("welcome");

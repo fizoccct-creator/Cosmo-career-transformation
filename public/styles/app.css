@@ -30,7 +30,8 @@ img { -webkit-user-drag: none; }
 #app[data-screen="photo"] .screen-photo,
 #app[data-screen="quiz"] .screen-quiz,
 #app[data-screen="loading"] .screen-loading,
-#app[data-screen="result"] .screen-result { display: grid; animation: enter var(--speed) var(--ease); }
+#app[data-screen="result"] .screen-result,
+#app[data-screen="error"] .screen-error { display: grid; animation: enter var(--speed) var(--ease); }
 @keyframes enter { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
 /* ---------- type ---------- */
@@ -103,7 +104,12 @@ img { -webkit-user-drag: none; }
 .welcome-art.has-art .orbit { display: none; }
 
 /* ---------- consent ---------- */
-.screen-consent { place-items: center start; }
+.screen-consent, .screen-error { place-items: center start; }
+.error-detail { margin: 0; font: 14px/1.4 monospace; color: #ffb4a8; max-width: 70ch; }
+.error-detail:empty { display: none; }
+.staff-warning { position: absolute; left: 50%; bottom: var(--space-sm); transform: translateX(-50%); z-index: 30;
+  background: #b3261e; color: #fff; font-size: var(--text-small); font-weight: var(--weight-bold);
+  padding: .5em 1.2em; border-radius: var(--radius-pill); }
 .consent-card { display: flex; flex-direction: column; gap: var(--space-lg); max-width: 60rem; }
 .consent-card .lead { max-width: 48ch; color: var(--color-text); }
 

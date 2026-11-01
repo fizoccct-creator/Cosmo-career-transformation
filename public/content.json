@@ -12,10 +12,9 @@
   },
   "consent": {
     "headline": "Before we take your photo",
-    "textAi": "Your photo is used only to create your career portrait. It is sent to Google's AI service to make the image, and it is not saved on this kiosk. Everything is cleared when you finish or walk away.",
-    "textLocal": "Your photo is used only to create your career portrait. It stays on this kiosk and is not saved. Everything is cleared when you finish or walk away.",
     "agree": "I AGREE",
-    "back": "BACK"
+    "back": "BACK",
+    "text": "Your photo is used only to create your career portrait. It is sent to Google's AI service to make the image, and it is not saved on this kiosk. Everything is cleared when you finish or walk away."
   },
   "photo": {
     "instruction": "Take a photo to discover your creative future.",
@@ -60,29 +59,21 @@
     "photographer": {
       "title": "Photographer",
       "description": "You see stories in a single frame. You notice light, emotion and the perfect moment, and you capture it so others can feel it too.",
-      "background": "assets/careers/photographer.svg",
-      "foreground": "",
       "aiPrompt": "Transform this photo into a photorealistic portrait of the same person working as a professional photographer. They are holding a professional DSLR camera with a large lens, standing in a modern photography studio with softbox lights, a backdrop stand and warm studio lighting."
     },
     "videographer": {
       "title": "Videographer",
       "description": "You think in moving pictures. You love planning shots, filming action and turning footage into stories that pull people in.",
-      "background": "assets/careers/videographer.svg",
-      "foreground": "",
       "aiPrompt": "Transform this photo into a photorealistic portrait of the same person working as a professional videographer. They are operating a cinema video camera on a tripod, on a film set with LED production lights, a boom microphone and monitors."
     },
     "designer": {
       "title": "Graphic Designer",
       "description": "You speak in colour, shape and type. You turn ideas into posters, logos and visuals that people remember.",
-      "background": "assets/careers/designer.svg",
-      "foreground": "",
       "aiPrompt": "Transform this photo into a photorealistic portrait of the same person working as a professional graphic designer. They are in a bright creative studio, using a drawing tablet and stylus in front of a large monitor showing colourful poster designs, with artwork and colour swatches on the wall."
     },
     "creator": {
       "title": "Content Creator",
       "description": "You know how to grab attention and share ideas. You entertain, inspire and build a community around what you create.",
-      "background": "assets/careers/creator.svg",
-      "foreground": "",
       "aiPrompt": "Transform this photo into a photorealistic portrait of the same person working as a content creator. They are in a modern home studio holding a smartphone, with a ring light, a podcast microphone on an arm, and colourful LED lighting in the background."
     }
   },
@@ -202,5 +193,15 @@
     "lookUp": 0.1,
     "lookDown": 0.12,
     "note": "Head controls for the quiz. Raise the numbers if answers get picked by accident; lower them if it's hard to choose. Add ?debug to the URL to see live values."
+  },
+  "error": {
+    "headline": "We couldn't create your portrait",
+    "text": "Something went wrong while making your career portrait. Let's try that again.",
+    "retry": "TRY AGAIN",
+    "restart": "START OVER"
+  },
+  "staff": {
+    "noKey": "STAFF: AI is off — add GEMINI_API_KEY to .env and restart node server.js",
+    "noServer": "STAFF: open this through node server.js (http://localhost:3000), not a file or Live Server"
   }
 }

@@ -16,6 +16,7 @@
   <!-- Global progress (hidden on the welcome screen) -->
   <ol id="progress" class="progress" aria-label="Progress"></ol>
   <div class="logo-slot" data-slot="logo" aria-hidden="true"></div>
+  <div id="staffWarning" class="staff-warning" hidden></div>
 
   <!-- 1. WELCOME -->
   <section class="screen screen-welcome" data-name="welcome">
@@ -110,6 +111,19 @@
       <h2 class="career-title" id="careerTitle"></h2>
       <p class="lead" id="careerText"></p>
       <button class="btn btn-primary btn-xl" data-action="restart" data-text="result.button"></button>
+    </div>
+  </section>
+
+  <!-- PORTRAIT FAILED -->
+  <section class="screen screen-error" data-name="error">
+    <div class="consent-card">
+      <h2 class="title" data-text="error.headline"></h2>
+      <p class="lead" data-text="error.text"></p>
+      <div class="row">
+        <button class="btn btn-ghost" data-action="restart" data-text="error.restart"></button>
+        <button class="btn btn-primary" data-action="retry" data-text="error.retry"></button>
+      </div>
+      <p class="error-detail" id="errorDetail"></p>
     </div>
   </section>
 

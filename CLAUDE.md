@@ -11,11 +11,11 @@
 - `server.js`: static server + `POST /api/portrait` (Gemini generateContent, image edit) + `GET /api/status`. Prompts are read **server-side** from `public/content.json`; the browser only sends a career id.
 - `public/content.json`: ALL copy, questions, careers, AI prompts, timings. Text changes go here, not in the HTML.
 - `public/styles/tokens.css`: design tokens + artwork slots for Figma. `app.css` uses only tokens.
-- `public/js/app.js`: screen state machine (welcome → consent → photo → quiz → loading → result), camera, idle reset.
-- `public/js/portrait.js`: AI first, then template fallback (bundled MediaPipe selfie segmentation in `public/vendor/`, works offline), then framed-photo fallback.
+- `public/js/app.js`: screen state machine (welcome → consent → photo → quiz → loading → result | error), camera, idle reset.
+- `public/js/portrait.js`: AI only: calls `/api/portrait`, throws a readable error on failure.
 
 ## Decisions already made with the owner (don't revisit unless asked)
-- Portrait = AI (Google Gemini, model set by `GEMINI_MODEL`) **with** an offline template fallback; visitors never see an error.
+- Portrait = AI only (Google Gemini, model set by `GEMINI_MODEL`). The owner removed the offline template fallback on purpose: the kiosk must be online. On failure, show the error screen (TRY AGAIN keeps the photo and answers; START OVER wipes them). Don't reintroduce a fallback unless asked.
 - One-tap consent screen before the camera (minors likely). Photos are never written to disk; wiped on result, restart and idle.
 - Quiz is AR (like the owner's earlier Cosmo Quiz head-tilt filter): 4 answers placed around the face; look up / look down / tilt left / tilt right, hold ~0.65 s to choose. Owner chose 4 directions to keep the 5 questions × 4 answers as written. Positions shuffle per question. Touch always works; falls back to a touch grid if tracking fails. Code: `public/js/ar-tracker.js` + AR block in `app.js`; settings in `content.json` → `ar`.
 - Q1–4 auto-advance after an answer; Q5 shows "DISCOVER MY CAREER" after an answer (answer can still be changed).

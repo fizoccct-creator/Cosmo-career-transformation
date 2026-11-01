@@ -5,7 +5,7 @@ Everything visual comes from three places:
 
 1. **`public/styles/tokens.css`**: colours, fonts, type sizes, corner radius, spacing, button sizes
 2. **Artwork slots**: images you export from Figma and point to in `tokens.css`
-3. **Career scenes**: `public/assets/careers/*.svg` (or .png), used for the template portrait
+3. **AI prompts**: the look of the portraits themselves (see the last section)
 
 ## Suggested Figma setup
 
@@ -21,6 +21,7 @@ Main kiosk frame: **1920 × 1080** (landscape). Optional: 1080 × 1920 for a por
 | 04b Question (touch fallback) | `screen-quiz` | Question top, 4 answer cards in a 2×2 grid, BACK bottom-left, DISCOVER MY CAREER bottom-right (question 5 only) |
 | 05 Loading | `screen-loading` | Round photo + spinning ring left (`--art-loading`), text right |
 | 06 Result | `screen-result` | Portrait **4:5** left, title + description + PLAY AGAIN right |
+| 07 Error | `screen-error` | "We couldn't create your portrait": START OVER / TRY AGAIN |
 | Idle | `.idle` | "Still there?" overlay |
 
 Text content (headlines, button labels, questions) is **not** in the design files. It lives in `public/content.json`, so you can design with real copy and edit the wording in one place.
@@ -47,21 +48,6 @@ Export from Figma (PNG at 2×, or SVG) into `public/assets/brand/`, then set the
 --art-logo: url("../assets/brand/logo.png");           /* top-right logo */
 --art-loading: url("../assets/brand/loading.png");     /* behind the loading photo */
 ```
-
-## Career scenes (template portrait)
-
-Used when AI is off or fails. Each is **1080 × 1350 (4:5)**.
-
-```
-public/assets/careers/photographer.svg
-public/assets/careers/videographer.svg
-public/assets/careers/designer.svg
-public/assets/careers/creator.svg
-```
-
-- The person is cut out and placed **centre-bottom, about 92% of the width**. Keep that area simple and put props around the top and sides.
-- Optional **foreground** layer: a transparent PNG drawn *in front of* the person, such as a camera strap, desk edge or ring-light glow. Export it at 1080 × 1350 and set `"foreground": "assets/careers/photographer-front.png"` for that career in `content.json`.
-- You can switch to PNG: export `photographer.png` and change `"background"` in `content.json`.
 
 ## AI portrait look
 
