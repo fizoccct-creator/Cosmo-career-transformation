@@ -17,7 +17,8 @@ Main kiosk frame: **1920 × 1080** (landscape). Optional: 1080 × 1920 for a por
 | 02 Consent | `screen-consent` | Text + BACK / I AGREE |
 | 03 Photo – live | `screen-photo` | Camera box is **4:5** on the left, instructions + TAKE PHOTO on the right |
 | 03b Photo – review | `screen-photo` | Same layout, CONTINUE + RETAKE |
-| 04 Question | `screen-quiz` | Question top, 4 answer cards in a 2×2 grid, BACK bottom-left, DISCOVER MY CAREER bottom-right (question 5 only) |
+| 04 Question (AR) | `screen-quiz.ar` | Live camera full-screen; question banner top; 4 answer cards float around the face (above head / below chin / left / right), each with a yellow gesture chip (↑ LOOK UP etc.); BACK and DISCOVER MY CAREER bottom. Card size: `--ar-card-width`, `--text-ar-option`, `--text-ar-question` |
+| 04b Question (touch fallback) | `screen-quiz` | Question top, 4 answer cards in a 2×2 grid, BACK bottom-left, DISCOVER MY CAREER bottom-right (question 5 only) |
 | 05 Loading | `screen-loading` | Round photo + spinning ring left (`--art-loading`), text right |
 | 06 Result | `screen-result` | Portrait **4:5** left, title + description + PLAY AGAIN right |
 | Idle | `.idle` | "Still there?" overlay |

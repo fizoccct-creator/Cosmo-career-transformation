@@ -35,6 +35,11 @@
   --text-button: clamp(1.15rem, 1.6vw, 1.9rem);
   --text-small: clamp(0.95rem, 1.1vw, 1.25rem);
 
+  /* AR quiz answer cards (placed around the face) */
+  --ar-card-width: clamp(190px, 18vw, 360px);
+  --text-ar-question: clamp(1.4rem, 2.5vw, 3rem);
+  --text-ar-option: clamp(1rem, 1.35vw, 1.6rem);
+
   /* ---- Shape & spacing ---- */
   --radius-lg: clamp(18px, 2vw, 36px);
   --radius-md: clamp(14px, 1.4vw, 24px);

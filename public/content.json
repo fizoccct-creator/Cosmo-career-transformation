@@ -5,13 +5,11 @@
     "countdownSeconds": 3,
     "aiTimeoutSeconds": 60
   },
-
   "welcome": {
     "headline": "DISCOVER YOUR CREATIVE CAREER",
     "text": "Discover your creative potential and see yourself in the world of digital media.",
     "button": "DISCOVER YOUR PASSION"
   },
-
   "consent": {
     "headline": "Before we take your photo",
     "textAi": "Your photo is used only to create your career portrait. It is sent to Google's AI service to make the image, and it is not saved on this kiosk. Everything is cleared when you finish or walk away.",
@@ -19,7 +17,6 @@
     "agree": "I AGREE",
     "back": "BACK"
   },
-
   "photo": {
     "instruction": "Take a photo to discover your creative future.",
     "take": "TAKE PHOTO",
@@ -27,26 +24,38 @@
     "continue": "CONTINUE",
     "noCamera": "We can't reach the camera. Please ask a staff member for help."
   },
-
   "quiz": {
     "progress": "Question {n} of {total}",
     "back": "BACK",
-    "finish": "DISCOVER MY CAREER"
+    "finish": "DISCOVER MY CAREER",
+    "hintStart": "Tilt or look towards your answer and hold",
+    "hintNoFace": "Look at the screen",
+    "hintReset": "Face the screen to continue",
+    "dirUp": "LOOK UP",
+    "dirDown": "LOOK DOWN",
+    "dirLeft": "TILT LEFT",
+    "dirRight": "TILT RIGHT",
+    "hintStepBack": "Step back a little so everything fits"
   },
-
   "loading": {
     "headline": "Creating your career portrait…",
-    "lines": ["Setting up the lights…", "Finding your best angle…", "Adding a creative touch…", "Almost there…"]
+    "lines": [
+      "Setting up the lights…",
+      "Finding your best angle…",
+      "Adding a creative touch…",
+      "Almost there…"
+    ]
   },
-
   "result": {
     "kicker": "YOUR CREATIVE CAREER",
     "prefix": "You are a future",
     "button": "PLAY AGAIN"
   },
-
-  "steps": ["Photo", "Quiz", "Career"],
-
+  "steps": [
+    "Photo",
+    "Quiz",
+    "Career"
+  ],
   "careers": {
     "photographer": {
       "title": "Photographer",
@@ -77,54 +86,121 @@
       "aiPrompt": "Transform this photo into a photorealistic portrait of the same person working as a content creator. They are in a modern home studio holding a smartphone, with a ring light, a podcast microphone on an arm, and colourful LED lighting in the background."
     }
   },
-
   "aiPromptRules": "Keep the person's face, identity, skin tone, age, hairstyle and expression clearly recognisable. Keep their clothing style and any head covering (such as a tudung or headscarf) exactly as worn in the photo. Make it natural, flattering, modest and professional. Portrait orientation. Do not add any text, logos or watermarks.",
-
   "questions": [
     {
       "text": "What do you enjoy doing the most?",
       "options": [
-        { "text": "Taking photos of people, places, and interesting moments.", "career": "photographer" },
-        { "text": "Recording videos and capturing exciting moments.", "career": "videographer" },
-        { "text": "Creating posters, logos, and digital artwork.", "career": "designer" },
-        { "text": "Making social media posts, sharing ideas, and entertaining people.", "career": "creator" }
+        {
+          "text": "Taking photos of people, places, and interesting moments.",
+          "career": "photographer"
+        },
+        {
+          "text": "Recording videos and capturing exciting moments.",
+          "career": "videographer"
+        },
+        {
+          "text": "Creating posters, logos, and digital artwork.",
+          "career": "designer"
+        },
+        {
+          "text": "Making social media posts, sharing ideas, and entertaining people.",
+          "career": "creator"
+        }
       ]
     },
     {
       "text": "Which activity sounds the most exciting?",
       "options": [
-        { "text": "Finding the perfect angle to capture a beautiful photo.", "career": "photographer" },
-        { "text": "Planning and filming a short movie or video.", "career": "videographer" },
-        { "text": "Designing a creative poster for an event.", "career": "designer" },
-        { "text": "Creating a fun TikTok or Instagram video.", "career": "creator" }
+        {
+          "text": "Finding the perfect angle to capture a beautiful photo.",
+          "career": "photographer"
+        },
+        {
+          "text": "Planning and filming a short movie or video.",
+          "career": "videographer"
+        },
+        {
+          "text": "Designing a creative poster for an event.",
+          "career": "designer"
+        },
+        {
+          "text": "Creating a fun TikTok or Instagram video.",
+          "career": "creator"
+        }
       ]
     },
     {
       "text": "If you could use one creative tool, which would you choose?",
       "options": [
-        { "text": "A professional camera and different lenses.", "career": "photographer" },
-        { "text": "A video camera, microphone, and tripod.", "career": "videographer" },
-        { "text": "A computer with digital design software.", "career": "designer" },
-        { "text": "A smartphone with content creation apps.", "career": "creator" }
+        {
+          "text": "A professional camera and different lenses.",
+          "career": "photographer"
+        },
+        {
+          "text": "A video camera, microphone, and tripod.",
+          "career": "videographer"
+        },
+        {
+          "text": "A computer with digital design software.",
+          "career": "designer"
+        },
+        {
+          "text": "A smartphone with content creation apps.",
+          "career": "creator"
+        }
       ]
     },
     {
       "text": "What would you most like people to notice about your work?",
       "options": [
-        { "text": "The beautiful moments and emotions I capture.", "career": "photographer" },
-        { "text": "The stories I tell through moving images.", "career": "videographer" },
-        { "text": "The visual style, colours, and designs I create.", "career": "designer" },
-        { "text": "The entertaining or inspiring content I share.", "career": "creator" }
+        {
+          "text": "The beautiful moments and emotions I capture.",
+          "career": "photographer"
+        },
+        {
+          "text": "The stories I tell through moving images.",
+          "career": "videographer"
+        },
+        {
+          "text": "The visual style, colours, and designs I create.",
+          "career": "designer"
+        },
+        {
+          "text": "The entertaining or inspiring content I share.",
+          "career": "creator"
+        }
       ]
     },
     {
       "text": "Imagine you are working on a school event. What role would you choose?",
       "options": [
-        { "text": "Taking memorable photos of the event.", "career": "photographer" },
-        { "text": "Filming and editing an event highlight video.", "career": "videographer" },
-        { "text": "Designing the event poster and promotional graphics.", "career": "designer" },
-        { "text": "Creating social media content and behind-the-scenes updates.", "career": "creator" }
+        {
+          "text": "Taking memorable photos of the event.",
+          "career": "photographer"
+        },
+        {
+          "text": "Filming and editing an event highlight video.",
+          "career": "videographer"
+        },
+        {
+          "text": "Designing the event poster and promotional graphics.",
+          "career": "designer"
+        },
+        {
+          "text": "Creating social media content and behind-the-scenes updates.",
+          "career": "creator"
+        }
       ]
     }
-  ]
+  ],
+  "ar": {
+    "enabled": true,
+    "holdMs": 650,
+    "tiltDegrees": 16,
+    "turnAmount": 0.3,
+    "lookUp": 0.1,
+    "lookDown": 0.12,
+    "note": "Head controls for the quiz. Raise the numbers if answers get picked by accident; lower them if it's hard to choose. Add ?debug to the URL to see live values."
+  }
 }

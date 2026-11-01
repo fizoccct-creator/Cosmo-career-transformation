@@ -16,7 +16,10 @@
     career: null,
     stream: null,
     busy: false,
+    ar: false,                       // quiz answered with head movements
+    positions: [],                   // per question: direction for each option (shuffled)
   };
+  const DEBUG = new URLSearchParams(location.search).has("debug");
   window.kiosk = state;              // handy for testing in the browser console
 
   // ---------- helpers ----------
@@ -51,6 +54,7 @@
 
   // ---------- reset (also used by the idle timer) ----------
   function resetAll() {
+    stopAR();
     stopCamera();
     state.photo = null;            // wipe the photo
     state.answers = []; state.q = 0; state.career = null; state.busy = false;
@@ -135,10 +139,16 @@
       `<span class="${i < state.q ? "done" : i === state.q ? "now" : ""}"></span>`).join("");
     $("questionText").textContent = q.text;
     const letters = "ABCDEFGH";
+    if (!state.positions[state.q]) state.positions[state.q] = shuffle(["up", "left", "right", "down"]);
+    const pos = state.positions[state.q];
+    const dirLabel = { up: "↑ " + C.quiz.dirUp, down: "↓ " + C.quiz.dirDown, left: "← " + C.quiz.dirLeft, right: C.quiz.dirRight + " →" };
     $("options").innerHTML = q.options.map((o, i) => `
-      <button class="option${state.answers[state.q] === i ? " selected" : ""}" role="listitem" data-index="${i}">
+      <button class="option${state.answers[state.q] === i ? " selected" : ""}" role="listitem" data-index="${i}" data-dir="${pos[i] || ""}">
+        <span class="dir">${dirLabel[pos[i]] || ""}</span>
         <span class="letter">${letters[i]}</span><span>${escapeHtml(o.text)}</span>
       </button>`).join("");
+    document.querySelector(".screen-quiz").classList.toggle("answered", state.answers[state.q] !== undefined);
+    ar.armed = false; ar.holdDir = null;
     const last = state.q === total - 1;
     $("finishBtn").hidden = !last;
     $("finishBtn").disabled = state.answers[state.q] === undefined;
@@ -152,10 +162,11 @@
     if (advancing) return;
     state.answers[state.q] = i;
     document.querySelectorAll(".option").forEach((b) => b.classList.toggle("selected", Number(b.dataset.index) === i));
+    document.querySelector(".screen-quiz").classList.add("answered");
     const last = state.q === C.questions.length - 1;
     if (last) { $("finishBtn").disabled = false; return; }
     advancing = true;
-    await wait(260);                 // brief highlight, then auto-advance
+    await wait(state.ar ? 650 : 260); // brief highlight, then auto-advance
     advancing = false;
     if (state.screen !== "quiz") return;
     state.q++;
@@ -178,6 +189,7 @@
     if (state.answers.length !== C.questions.length || state.answers.includes(undefined)) return;
     state.career = tally();
     const career = C.careers[state.career];
+    stopAR(); stopCamera();
     $("loadingPhoto").src = state.photo;
     show("loading");
     const lines = C.loading.lines; let li = 0;
@@ -220,6 +232,117 @@
     }
   }
 
+  // ---------- AR quiz (answer with head movements) ----------
+  const ar = { armed: false, holdDir: null, holdStart: 0, lastIdleBump: 0, anchor: null };
+
+  async function startQuiz() {
+    state.q = 0; state.answers = []; state.positions = [];
+    state.ar = false; ar.anchor = null;
+    if (C.ar?.enabled && state.stream) {
+      try {
+        await ARTracker.load();
+        ARTracker.configure(C.ar);
+        $("arVideo").srcObject = state.stream;
+        await $("arVideo").play();
+        state.ar = true;
+      } catch (e) { console.warn("AR quiz off, using touch:", e.message); }
+    }
+    if (!state.ar) stopCamera();
+    document.querySelector(".screen-quiz").classList.toggle("ar", state.ar);
+    renderQuestion();
+    show("quiz");
+    if (state.ar) ARTracker.start($("arVideo"), document.querySelector(".screen-quiz"), arFrame);
+    Portrait.preload();
+  }
+
+  function stopAR() {
+    ARTracker.stop();
+    $("arVideo").srcObject = null;
+    $("arHint").hidden = true;
+    $("arDebug").hidden = true;
+  }
+
+  function arFrame(face, dir) {
+    if (state.screen !== "quiz") return;
+    const now = performance.now();
+    const box = document.querySelector(".screen-quiz");
+    const W = box.clientWidth, H = box.clientHeight;
+    // Anchor: the face, or the middle of the screen if no face is visible yet.
+    // Cards glide after the face and ignore small wobbles, so they stay easy to read and tap.
+    const tU = face.found ? Math.max(face.unit, H * 0.16) : H * 0.22;
+    const tx = face.found ? face.x : W / 2, ty = face.found ? face.y : H * 0.55;
+    if (!ar.anchor) ar.anchor = { x: tx, y: ty, u: tU };
+    const A = ar.anchor, dead = A.u * 0.06;
+    if (Math.hypot(tx - A.x, ty - A.y) > dead || Math.abs(tU - A.u) > dead) {
+      A.x += (tx - A.x) * 0.18; A.y += (ty - A.y) * 0.18; A.u += (tU - A.u) * 0.18;
+    }
+    const U = A.u, ax = A.x, ay = A.y;
+
+    // Keep cards between the question (top) and the buttons (bottom)
+    const qRect = $("questionText").getBoundingClientRect(), bRect = box.getBoundingClientRect();
+    const topLimit = qRect.bottom - bRect.top + 12;
+    const bottomLimit = $("finishBtn").closest(".quiz-foot").getBoundingClientRect().top - bRect.top - 12;
+    document.querySelectorAll(".screen-quiz.ar .option").forEach((el) => {
+      const w = el.offsetWidth, h = el.offsetHeight;
+      let x = ax, y = ay;
+      // Cards sit around the head: above the eyebrows, beside the ears, below the chin.
+      switch (el.dataset.dir) {
+        case "up":    y = ay - U * 0.55 - h / 2; break;
+        case "down":  y = ay + U * 1.2 + h / 2; break;
+        case "left":  x = ax - U * 0.95 - w / 2; y = ay + U * 0.25; break;
+        case "right": x = ax + U * 0.95 + w / 2; y = ay + U * 0.25; break;
+      }
+      x = Math.min(Math.max(x, w / 2 + 16), W - w / 2 - 16);
+      if (el.dataset.dir === "up") y = Math.max(Math.min(y, ay - U * 0.4 - h / 2), topLimit + h / 2);
+      y = Math.min(Math.max(y, topLimit + h / 2), bottomLimit - h / 2);
+      el.style.left = Math.round(x) + "px"; el.style.top = Math.round(y) + "px";
+    });
+
+    // Too close / too high in the frame: the "up" card can't fit above the eyebrows
+    const upCard = document.querySelector('.screen-quiz.ar .option[data-dir="up"]');
+    const tooClose = face.found && upCard && (ay - U * 0.4 - upCard.offsetHeight) < topLimit - 4;
+
+    // A visible face counts as activity for the idle timer
+    if (face.found && now - ar.lastIdleBump > 2000) { ar.lastIdleBump = now; resetIdle(); }
+
+    // Choosing: head back to neutral first, then hold a direction
+    if (!advancing && !ar.armed && ARTracker.neutral()) ar.armed = true;
+    const active = ar.armed && !advancing ? dir : null;
+    if (active !== ar.holdDir) { ar.holdDir = active; ar.holdStart = now; }
+    const progress = active ? Math.min((now - ar.holdStart) / C.ar.holdMs, 1) : 0;
+    document.querySelectorAll(".screen-quiz.ar .option").forEach((el) => {
+      const on = el.dataset.dir === active;
+      el.classList.toggle("holding", on);
+      el.style.setProperty("--hold", on ? progress : 0);
+    });
+    if (active && progress >= 1) {
+      const el = document.querySelector(`.screen-quiz.ar .option[data-dir="${active}"]`);
+      ar.armed = false; ar.holdDir = null;
+      if (el) choose(Number(el.dataset.index));
+    }
+
+    // Hint
+    let hint = "";
+    if (!face.found) hint = C.quiz.hintNoFace;
+    else if (tooClose) hint = C.quiz.hintStepBack;
+    else if (!ar.armed && !advancing && state.answers[state.q] !== undefined && state.q === C.questions.length - 1) hint = "";
+    else if (!ar.armed && !advancing) hint = C.quiz.hintReset;
+    else if (state.q === 0 && state.answers[0] === undefined) hint = C.quiz.hintStart;
+    if ($("arHint").textContent !== hint) $("arHint").textContent = hint;
+    $("arHint").hidden = !hint;
+
+    if (DEBUG) {
+      $("arDebug").hidden = false;
+      $("arDebug").textContent = `face ${face.found ? "yes" : "no"}  roll ${face.roll.toFixed(1)}°  turn ${face.turn.toFixed(2)}  ` +
+        `look ${(face.pitch - (face.base ?? face.pitch)).toFixed(3)}  dir ${dir || "-"}  armed ${ar.armed}`;
+    }
+  }
+
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  }
+
   // ---------- idle timeout ----------
   let idleTimer = null, idleTick = null;
   function resetIdle() {
@@ -250,14 +373,16 @@
     switch (btn.dataset.action) {
       case "start": show("consent"); break;
       case "home": resetAll(); break;
-      case "agree": show("photo"); startCamera(); break;
+      case "agree":
+        show("photo"); startCamera();
+        if (C.ar?.enabled) ARTracker.load().catch((e) => console.warn("Face tracking unavailable:", e.message));
+        break;
       case "take": countdownAndCapture(); break;
       case "retake": if (state.stream) setPhotoMode("live"); else startCamera(); break;
-      case "continue":
-        stopCamera(); state.q = 0; state.answers = []; renderQuestion(); show("quiz"); Portrait.preload(); break;
+      case "continue": startQuiz(); break;
       case "quiz-back":
         if (state.q > 0) { state.q--; renderQuestion(); }
-        else { show("photo"); setPhotoMode("review"); }
+        else { stopAR(); show("photo"); setPhotoMode("review"); }
         break;
       case "finish": finish(); break;
       case "restart": resetAll(); break;

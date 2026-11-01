@@ -6,8 +6,30 @@ A full-screen touchscreen kiosk experience. The visitor:
 3. gets an AI-generated portrait of themselves as a **Photographer, Videographer, Graphic Designer or Content Creator**.
 
 ```
-Welcome → Consent → Photo (3-2-1 countdown) → 5 questions → "Creating your portrait…" → Result → back to Welcome
+Welcome → Consent → Photo (3-2-1 countdown) → 5 AR questions → "Creating your portrait…" → Result → back to Welcome
 ```
+
+## AR quiz (answer with your head)
+
+After the photo, the camera stays on. Each question's four answers float around the visitor's face:
+
+| Answer position | Gesture |
+|---|---|
+| above the head | **look up** |
+| below the chin | **look down** |
+| left of the face | **tilt (or turn) left** |
+| right of the face | **tilt (or turn) right** |
+
+- Hold the gesture for about 0.65 s. A yellow bar fills on the card, then it's chosen. The visitor must face the screen again before the next answer counts.
+- Up/down is measured against **each visitor's own neutral pose**, so someone who naturally looks down at the screen won't trigger "down" by accident.
+- The four positions are **shuffled for every question**, so nobody can just "always look up".
+- **Tapping a card always works too.** If face tracking can't start, the quiz falls back to a normal touch grid.
+- If someone stands too close, the screen says "Step back a little so everything fits".
+- **Tuning:** the `ar` section in `content.json` (`holdMs`, `tiltDegrees`, `lookUp`, `lookDown`). Add `?debug` to the URL (http://localhost:3000/?debug) to see live values while you test.
+- **Fully offline face tracking:** the tracking code is bundled. The face model downloads from Google the first time. To keep it on the kiosk (recommended for events), run once:
+  ```
+  curl -L -o public/vendor/face_landmarker/face_landmarker.task https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task
+  ```
 
 ## Run it on your Mac
 
@@ -82,6 +104,9 @@ public/styles/tokens.css      DESIGN TOKENS: colours, fonts, sizes, artwork slot
 public/styles/app.css         layout (landscape first, portrait supported)
 public/js/app.js              flow, camera, quiz, idle reset
 public/js/portrait.js         AI portrait + template fallback
+public/js/ar-tracker.js       head tracking for the AR quiz (MediaPipe Face Landmarker)
 public/assets/careers/        career scenes for the template portrait (placeholders for now)
 public/vendor/selfie_segmentation/   Google MediaPipe cut-out model (Apache 2.0), bundled so it works offline
+public/vendor/tasks-vision/          Google MediaPipe face tracking (Apache 2.0), bundled
+public/vendor/face_landmarker/       put face_landmarker.task here for offline AR (see above)
 ```

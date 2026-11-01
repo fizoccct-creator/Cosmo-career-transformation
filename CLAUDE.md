@@ -17,7 +17,8 @@
 ## Decisions already made with the owner (don't revisit unless asked)
 - Portrait = AI (Google Gemini, model set by `GEMINI_MODEL`) **with** an offline template fallback; visitors never see an error.
 - One-tap consent screen before the camera (minors likely). Photos are never written to disk; wiped on result, restart and idle.
-- Q1–4 auto-advance on tap; Q5 shows "DISCOVER MY CAREER" after an answer.
+- Quiz is AR (like the owner's earlier Cosmo Quiz head-tilt filter): 4 answers placed around the face; look up / look down / tilt left / tilt right, hold ~0.65 s to choose. Owner chose 4 directions to keep the 5 questions × 4 answers as written. Positions shuffle per question. Touch always works; falls back to a touch grid if tracking fails. Code: `public/js/ar-tracker.js` + AR block in `app.js`; settings in `content.json` → `ar`.
+- Q1–4 auto-advance after an answer; Q5 shows "DISCOVER MY CAREER" after an answer (answer can still be changed).
 - Tie-break: the most recently chosen of the tied careers wins.
 - No take-home/sharing yet (no QR, no printing).
 - Landscape kiosk first (1920×1080), portrait screens supported.
@@ -26,6 +27,7 @@
 ## Known unknowns
 - Real Gemini calls are untested (built against a mock). Model names change; errors are logged in the terminal.
 - Not yet tried on the physical touchscreen.
+- AR up/down thresholds were tuned on a simulated face, not real people: expect to adjust `lookUp`/`lookDown` with `?debug`.
 
 ## Owner's working style
 Stress-test strategic choices and point out weak assumptions; once the owner decides, execute without re-arguing. English only.
