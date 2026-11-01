@@ -15,7 +15,7 @@ const path = require("path");
 loadDotEnv(path.join(__dirname, ".env"));
 const PORT = Number(process.env.PORT || 3000);
 const API_KEY = process.env.GEMINI_API_KEY || "";
-const MODEL = process.env.GEMINI_MODEL || "gemini-nano-banana-2.1";
+const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-image";
 const API_BASE = process.env.GEMINI_BASE_URL || "https://generativelanguage.googleapis.com/v1beta";
 const ASPECT = process.env.PORTRAIT_ASPECT_RATIO || "4:5";
 const PUBLIC_DIR = path.join(__dirname, "public");
