@@ -43,7 +43,7 @@ You need **Node.js 18 or newer** (check with `node -v`; install from https://nod
    ```
 4. Open **http://localhost:3000** in Chrome.
 
-Use `node server.js`, not VS Code's "Live Server" or "Go Live". The AI portrait needs this server, and Live Server would run the app without it, so you'd only get the template portrait.
+Use `node server.js`, not VS Code's "Live Server" or "Go Live". The AI portrait needs this server; without it, portraits fail and a red staff warning appears.
 
 ## Turn on AI portraits (Google Gemini)
 
